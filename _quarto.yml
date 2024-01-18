@@ -21,8 +21,8 @@ website:
     right:
       - text: "Home"
         file: index.qmd
-      - text: "Data Cleansing"
-        file: cleansing.qmd
+      - text: "Resume"
+        file: resume.qmd
       - text: "Data Exploration"
         file: exploration.qmd
       - text: "Story Telling"
