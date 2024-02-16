@@ -31,6 +31,8 @@ website:
         file: ml.qmd
       - text: "Full Stack"
         file: full_stack.qmd
+      - text: "Project #2"
+        file: Project2.qmd
       - text: "Competition"
         file: competition.qmd
       
