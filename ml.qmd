@@ -4,8 +4,151 @@ subtitle: "my data science portfolio"
 # use quarto markdown to 
 ---
 
-# Title 1 Header
-## Title 2 Header
+
+## Elevator pitch
+
+In this project, I will be looking at the data from the Bureau of Transportation Statistics to see which airports have the least amount of days at which times of the year and other interesting finds within the data!
+
+## Loading in The JSON Data
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import json
+```
+
+```{python}
+#| label: project-data
+#| code-summary: Loading the json data and turning it into a dataframe
+
+f = open("flights_missing.json","r")
+
+x = json.load(f)
+
+f.close()
+
+df = pd.DataFrame(x)
+
+```
+
+## Clean Up - Clean Up Everybody Do Your Share
+__Fix all of the varied missing data types in the data to be consistent__
+
+```{python}
+#| label: Q1
+#| code-summary: Cleaning up data and filling NAs
+# loop through tasks in my tasks list and sort the data by airport to find the mean of certain delays and fill the nan values with their respective mean.
+
+tasks = ["minutes_delayed_carrier", "minutes_delayed_nas"]
+
+means = df.groupby("airport_code")["minutes_delayed_carrier"].mean().to_dict()
+
+for task in tasks:
+  for airport in means:
+    mean_delay = df[df["airport_code"] == airport][task].fillna(means[airport])
+
+    df.loc[df["airport_code"] == airport, task] = mean_delay
+
+```
+
+```{python}
+#| label: year
+
+# This is a quick fix to the nan values in year, but does not take into account if january is a nan value and we forward fill from last year
+
+df.year.ffill(inplace=True)
+
+```
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: fix months
+# This is a quick fix to the nan values in year, but does not take into account if january is a nan value and we forward fill from last year
+
+df = df[df['month'] != 'n/a']
+
+df['month'] = df['month'].replace('Febuary', 'February')
+
+```
+
+## Delays
+
+__Which airport has the worst delays?__
+
+From the looks of the graph below, ORD airport has the worst delays over the course of 10 years. This shows that if your looking to take a trip, for a vacation, or on short-term notice, well... Let's hope you don't live where that airport is!
+
+
+```{python}
+#| label: chart stuff
+#| code-summary: plot example
+#| fig-cap: "My uselful chart"
+#| fig-align: center
+
+chart = px.bar(df,
+    x="airport_code", 
+    y="minutes_delayed_total",
+    title="Total Minutes in Delays",
+)
+chart.show()
+```
+
+## Best Time to Travel
+
+__What is the best month to fly if you want to avoid delays of any length?__
+
+It seems to be that November would be the best month to travel because across all the airports, that month has the least delayed time.
+
+```{python}
+#| label: Q1-table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+
+grph = px.bar(df,
+x="month",
+y="minutes_delayed_total",
+color="airport_code",
+title = "Best Month to Travel"
+)
+grph.show()
+
+```
+
+
+## Weather
+
+__create a new column that calculates the total number of flights delayed by weather (both severe and mild)__
+
+```{python}
+#| label: Q2
+#| code-summary: Read and format data
+
+df["weather_delays"] = df.num_of_flights_total + (df.num_of_delays_late_aircraft * .3) + np.where(df['month'].isin(['April','May','June','July','August']), (df.num_of_delays_nas * .4), (df.num_of_delays_nas * .65))
+
+
+```
+
+## Weather Delays Compared to Airports
+
+__Using the new weather variable calculated above, create a barplot showing the proportion of all flights that are delayed by weather at each airport__
+
+It looks like Atlanta, Georgia experiences the most weather delays than any other airport.
+
+```{python}
+#| label: Q2-chart
+#| code-summary: plot example
+#| fig-cap: "Chart!"
+#| fig-align: center
+
+charts = px.bar(df, x="airport_code", y="weather_delays", title="Delays vs Airports")
+
+charts.show()
+
+```
+
 
 [MarkDown Basics](https://quarto.org/docs/authoring/markdown-basics.html#links-images)
 
