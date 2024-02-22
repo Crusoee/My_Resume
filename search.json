@@ -14,43 +14,71 @@
     "text": "MarkDown Basics"
   },
   {
-    "objectID": "ml.html",
-    "href": "ml.html",
+    "objectID": "Project2.html",
+    "href": "Project2.html",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "",
+    "text": "In this project, I will be looking at the data from the Bureau of Transportation Statistics to see which airports have the least amount of days at which times of the year and other interesting finds within the data!"
+  },
+  {
+    "objectID": "Project2.html#elevator-pitch",
+    "href": "Project2.html#elevator-pitch",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "",
+    "text": "In this project, I will be looking at the data from the Bureau of Transportation Statistics to see which airports have the least amount of days at which times of the year and other interesting finds within the data!"
+  },
+  {
+    "objectID": "Project2.html#loading-in-the-json-data",
+    "href": "Project2.html#loading-in-the-json-data",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Loading in The JSON Data",
+    "text": "Loading in The JSON Data\n\n\nLoading the json data and turning it into a dataframe\ndf = pd.read_json(\"https://raw.githubusercontent.com/byuidatascience/data4missing/master/data-raw/flights_missing/flights_missing.json\")\n\n# x = json.load(f)\n\n# f.close()\n\n# df = pd.DataFrame(x)"
+  },
+  {
+    "objectID": "Project2.html#clean-up---clean-up-everybody-do-your-share",
+    "href": "Project2.html#clean-up---clean-up-everybody-do-your-share",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Clean Up - Clean Up Everybody Do Your Share",
+    "text": "Clean Up - Clean Up Everybody Do Your Share\nFix all of the varied missing data types in the data to be consistent\n\n\nCleaning up data and filling NAs\n# loop through tasks in my tasks list and sort the data by airport to find the mean of certain delays and fill the nan values with their respective mean.\n\ntasks = [\"minutes_delayed_carrier\", \"minutes_delayed_nas\"]\n\nmeans = df.groupby(\"airport_code\")[\"minutes_delayed_carrier\"].mean().to_dict()\n\nfor task in tasks:\n  for airport in means:\n    mean_delay = df[df[\"airport_code\"] == airport][task].fillna(means[airport])\n\n    df.loc[df[\"airport_code\"] == airport, task] = mean_delay\n\n\n\n\nShow the code\n# This is a quick fix to the nan values in year, but does not take into account if january is a nan value and we forward fill from last year\n\ndf.year.ffill(inplace=True)\n\n\ninclude figures in chunks and discuss your findings in the figure.\n\n\nShow the code\n# This is a quick fix to the nan values in year, but does not take into account if january is a nan value and we forward fill from last year\n\ndf = df[df['month'] != 'n/a']\n\ndf['month'] = df['month'].replace('Febuary', 'February')"
+  },
+  {
+    "objectID": "Project2.html#delays",
+    "href": "Project2.html#delays",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Delays",
+    "text": "Delays\nWhich airport has the worst delays?\nFrom the looks of the graph below, ORD airport has the worst delays over the course of 10 years. This shows that if your looking to take a trip, for a vacation, or on short-term notice, well… Let’s hope you don’t live where that airport is!\n::: {#cell-chart stuff .cell execution_count=6}\n\nplot example\nchart = px.bar(df,\n    x=\"airport_code\", \n    y=\"minutes_delayed_total\",\n    title=\"Total Minutes in Delays\",\n)\nchart.show()\n\n\n                                                \nMy uselful chart\n\n:::"
+  },
+  {
+    "objectID": "Project2.html#best-time-to-travel",
+    "href": "Project2.html#best-time-to-travel",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Best Time to Travel",
+    "text": "Best Time to Travel\nWhat is the best month to fly if you want to avoid delays of any length?\nIt seems to be that November would be the best month to travel because across all the airports, that month has the least delayed time.\n\n\ntable example\ngrph = px.bar(df,\nx=\"month\",\ny=\"minutes_delayed_total\",\ncolor=\"airport_code\",\ntitle = \"Best Month to Travel\"\n)\ngrph.show()"
+  },
+  {
+    "objectID": "Project2.html#weather",
+    "href": "Project2.html#weather",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Weather",
+    "text": "Weather\ncreate a new column that calculates the total number of flights delayed by weather (both severe and mild)\n\n\nRead and format data\ndf[\"weather_delays\"] = df.num_of_flights_total + (df.num_of_delays_late_aircraft * .3) + np.where(df['month'].isin(['April','May','June','July','August']), (df.num_of_delays_nas * .4), (df.num_of_delays_nas * .65))"
+  },
+  {
+    "objectID": "Project2.html#weather-delays-compared-to-airports",
+    "href": "Project2.html#weather-delays-compared-to-airports",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Weather Delays Compared to Airports",
+    "text": "Weather Delays Compared to Airports\nUsing the new weather variable calculated above, create a barplot showing the proportion of all flights that are delayed by weather at each airport\nIt looks like Atlanta, Georgia experiences the most weather delays than any other airport.\n\n\nplot example\ncharts = px.bar(df, x=\"airport_code\", y=\"weather_delays\", title=\"Delays vs Airports\")\n\ncharts.show()\n\n\n                                                \nChart!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
     "title": "about me",
     "section": "",
     "text": "MarkDown Basics"
   },
   {
-    "objectID": "ml.html#title-2-header",
-    "href": "ml.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "full_stack.html",
-    "href": "full_stack.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "full_stack.html#title-2-header",
-    "href": "full_stack.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "competition.html",
-    "href": "competition.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "competition.html#title-2-header",
-    "href": "competition.html#title-2-header",
+    "objectID": "index.html#title-2-header",
+    "href": "index.html#title-2-header",
     "title": "about me",
     "section": "",
     "text": "MarkDown Basics"
@@ -70,18 +98,88 @@
     "text": "MarkDown Basics"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
+    "objectID": "competition.html",
+    "href": "competition.html",
     "title": "about me",
     "section": "",
     "text": "MarkDown Basics"
   },
   {
-    "objectID": "index.html#title-2-header",
-    "href": "index.html#title-2-header",
+    "objectID": "competition.html#title-2-header",
+    "href": "competition.html#title-2-header",
     "title": "about me",
     "section": "",
     "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "full_stack.html",
+    "href": "full_stack.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "full_stack.html#title-2-header",
+    "href": "full_stack.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "ml.html",
+    "href": "ml.html",
+    "title": "about me",
+    "section": "",
+    "text": "In this project, I will be looking at the data from the Bureau of Transportation Statistics to see which airports have the least amount of days at which times of the year and other interesting finds within the data!"
+  },
+  {
+    "objectID": "ml.html#elevator-pitch",
+    "href": "ml.html#elevator-pitch",
+    "title": "about me",
+    "section": "",
+    "text": "In this project, I will be looking at the data from the Bureau of Transportation Statistics to see which airports have the least amount of days at which times of the year and other interesting finds within the data!"
+  },
+  {
+    "objectID": "ml.html#loading-in-the-json-data",
+    "href": "ml.html#loading-in-the-json-data",
+    "title": "about me",
+    "section": "Loading in The JSON Data",
+    "text": "Loading in The JSON Data\n\ndf = pd.read_json(\"https://raw.githubusercontent.com/byuidatascience/data4missing/master/data-raw/flights_missing/flights_missing.json\")\n\n# x = json.load(f)\n\n# f.close()\n\n# df = pd.DataFrame(x)"
+  },
+  {
+    "objectID": "ml.html#clean-up---clean-up-everybody-do-your-share",
+    "href": "ml.html#clean-up---clean-up-everybody-do-your-share",
+    "title": "about me",
+    "section": "Clean Up - Clean Up Everybody Do Your Share",
+    "text": "Clean Up - Clean Up Everybody Do Your Share\nFix all of the varied missing data types in the data to be consistent\n\n# loop through tasks in my tasks list and sort the data by airport to find the mean of certain delays and fill the nan values with their respective mean.\n\ntasks = [\"minutes_delayed_carrier\", \"minutes_delayed_nas\"]\n\nmeans = df.groupby(\"airport_code\")[\"minutes_delayed_carrier\"].mean().to_dict()\n\nfor task in tasks:\n  for airport in means:\n    mean_delay = df[df[\"airport_code\"] == airport][task].fillna(means[airport])\n\n    df.loc[df[\"airport_code\"] == airport, task] = mean_delay\n\n\n# This is a quick fix to the nan values in year, but does not take into account if january is a nan value and we forward fill from last year\n\ndf.year.ffill(inplace=True)\n\ninclude figures in chunks and discuss your findings in the figure.\n\n# This is a quick fix to the nan values in year, but does not take into account if january is a nan value and we forward fill from last year\n\ndf = df[df['month'] != 'n/a']\n\ndf['month'] = df['month'].replace('Febuary', 'February')"
+  },
+  {
+    "objectID": "ml.html#delays",
+    "href": "ml.html#delays",
+    "title": "about me",
+    "section": "Delays",
+    "text": "Delays\nWhich airport has the worst delays?\nFrom the looks of the graph below, ORD airport has the worst delays over the course of 10 years. This shows that if your looking to take a trip, for a vacation, or on short-term notice, well… Let’s hope you don’t live where that airport is!\n::: {#cell-chart stuff .cell execution_count=6}\nchart = px.bar(df,\n    x=\"airport_code\", \n    y=\"minutes_delayed_total\",\n    title=\"Total Minutes in Delays\",\n)\nchart.show()\n\n                                                \nMy uselful chart\n\n:::"
+  },
+  {
+    "objectID": "ml.html#best-time-to-travel",
+    "href": "ml.html#best-time-to-travel",
+    "title": "about me",
+    "section": "Best Time to Travel",
+    "text": "Best Time to Travel\nWhat is the best month to fly if you want to avoid delays of any length?\nIt seems to be that November would be the best month to travel because across all the airports, that month has the least delayed time.\n\ngrph = px.bar(df,\nx=\"month\",\ny=\"minutes_delayed_total\",\ncolor=\"airport_code\",\ntitle = \"Best Month to Travel\"\n)\ngrph.show()"
+  },
+  {
+    "objectID": "ml.html#weather",
+    "href": "ml.html#weather",
+    "title": "about me",
+    "section": "Weather",
+    "text": "Weather\ncreate a new column that calculates the total number of flights delayed by weather (both severe and mild)\n\ndf[\"weather_delays\"] = df.num_of_flights_total + (df.num_of_delays_late_aircraft * .3) + np.where(df['month'].isin(['April','May','June','July','August']), (df.num_of_delays_nas * .4), (df.num_of_delays_nas * .65))"
+  },
+  {
+    "objectID": "ml.html#weather-delays-compared-to-airports",
+    "href": "ml.html#weather-delays-compared-to-airports",
+    "title": "about me",
+    "section": "Weather Delays Compared to Airports",
+    "text": "Weather Delays Compared to Airports\nUsing the new weather variable calculated above, create a barplot showing the proportion of all flights that are delayed by weather at each airport\nIt looks like Atlanta, Georgia experiences the most weather delays than any other airport.\n\ncharts = px.bar(df, x=\"airport_code\", y=\"weather_delays\", title=\"Delays vs Airports\")\n\ncharts.show()\n\n                                                \nChart!\n\n\nMarkDown Basics"
   },
   {
     "objectID": "resume.html",
