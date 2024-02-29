@@ -24,13 +24,14 @@ import json
 #| label: project-data
 #| code-summary: Loading the json data and turning it into a dataframe
 
-f = open("flights_missing.json","r")
 
-x = json.load(f)
+df = pd.read_json("https://raw.githubusercontent.com/byuidatascience/data4missing/master/data-raw/flights_missing/flights_missing.json")
 
-f.close()
+# x = json.load(f)
 
-df = pd.DataFrame(x)
+# f.close()
+
+# df = pd.DataFrame(x)
 
 ```
 

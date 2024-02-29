@@ -1,0 +1,111 @@
+## W07.1 - U3 (Week B) - Class Code
+
+```{=html}
+<iframe id="kaltura_player" src="https://cdnapisec.kaltura.com/p/1157612/sp/115761200/embedIframeJs/uiconf_id/41338032/partner_id/1157612?iframeembed=true&playerId=kaltura_player&entry_id=1_krp9ct2r&flashvars[localizationCode]=en&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=1_gd2vefwz" width="608" height="402" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="W07"></iframe>
+```
+
+### Introduction to the functions you will be learning in this unit. Below is the code used in the video so you can follow along.
+
+```{python}
+# %%
+import pandas as pd 
+import numpy as np
+import plotly.express as px
+import sqlite3
+```
+
+```{python}
+# %%
+# Upgrade pip if needed
+import sys
+!{sys.executable} -m pip install --upgrade pip
+```
+
+```{python}
+# %%
+# careful to list your path to the file. Or save this code in the same folder as the sqlite file.
+sqlite_file = 'lahmansbaseballdb.sqlite'
+con = sqlite3.connect(sqlite_file)
+```
+
+```{python}
+# %%
+q = '''SELECT cp.playerID, schoolID, salary, cp.yearID, teamID 
+        FROM salaries s join collegeplaying cp on cp.playerID = s.playerID 
+        Where schoolID = 'idbyuid'
+        Order by s.salary desc'''
+batting5 = pd.read_sql_query(q,con)
+batting5
+```
+
+```{python}
+# %%
+
+q = '''
+
+SELECT playerID, yearID, CAST(AB AS FLOAT), CAST(H AS FLOAT), CAST(H AS FLOAT)/ CAST(AB AS FLOAT) as battingAverage
+FROM batting
+WHERE AB >= 1
+ORDER BY battingAverage desc, playerID
+LIMIT 5
+
+'''
+
+battingAverage = pd.read_sql_query(q,con)
+battingAverage
+
+```
+
+```{python}
+# %%
+# What columns do we want to select?
+q = '''
+
+SELECT playerID, yearID, CAST(AB AS FLOAT), CAST(H AS FLOAT), CAST(H AS FLOAT)/ CAST(AB AS FLOAT) as battingAverage
+FROM batting
+WHERE AB >= 10
+ORDER BY battingAverage desc, playerID
+LIMIT 5
+
+'''
+
+battingAverage = pd.read_sql_query(q,con)
+battingAverage
+```
+
+```{python}
+# %%
+# What calculation do we want to perform?
+
+q = '''
+
+SELECT playerID, yearID, CAST(AB AS FLOAT), CAST(H AS FLOAT), SUM(CAST(H AS FLOAT))/ SUM(CAST(AB AS FLOAT)) as battingAverage
+FROM batting
+WHERE AB >= 100
+ORDER BY battingAverage desc, playerID
+LIMIT 5
+
+'''
+
+battingAverage = pd.read_sql_query(q,con)
+battingAverage
+```
+
+```{python}
+# %%
+# What name do we give our calculated column?
+
+q = '''
+SELECT teamid, 
+        Sum(r) as Total_Runs
+FROM batting
+GROUP BY teamid
+LIMIT 10000
+'''
+
+batting_calc = pd.read_sql_query(q,con)
+batting_calc
+
+fig = px.bar(batting_calc[(batting_calc.teamID == 'BR1') | (batting_calc.teamID == 'BRF')], x='teamID', y='Total_Runs', title='Total Runs by Team')
+fig.show()
+```

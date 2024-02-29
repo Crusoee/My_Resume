@@ -33,6 +33,8 @@ website:
         file: full_stack.qmd
       - text: "Project #2"
         file: Project2.qmd
+      - text: "Project #3"
+        file: Project3.qmd
       - text: "Competition"
         file: competition.qmd
       
