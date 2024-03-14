@@ -21,6 +21,13 @@
     "text": "Show the code\n# %%\nimport pandas as pd \nimport numpy as np\nimport plotly.express as px\nimport sqlite3\nShow the code\n# %%\n# Upgrade pip if needed\nimport sys\n!{sys.executable} -m pip install --upgrade pip\n\n\nRequirement already satisfied: pip in c:\\users\\drewl\\appdata\\local\\programs\\python\\python312\\lib\\site-packages (24.0)\nShow the code\n# %%\n# careful to list your path to the file. Or save this code in the same folder as the sqlite file.\nsqlite_file = 'lahmansbaseballdb.sqlite'\ncon = sqlite3.connect(sqlite_file)"
   },
   {
+    "objectID": "Project3.html#well-look-no-further-because-this-project-is-all-about-finding-major-league-baseball-players-who-went-to-byui.",
+    "href": "Project3.html#well-look-no-further-because-this-project-is-all-about-finding-major-league-baseball-players-who-went-to-byui.",
+    "title": "Client Report - Late flights and missing data (JSON files)",
+    "section": "Well look no further because this project is all about finding major league baseball players who went to BYUI.",
+    "text": "Well look no further because this project is all about finding major league baseball players who went to BYUI."
+  },
+  {
     "objectID": "Project3.html#write-an-sql-query-to-create-a-new-dataframe-about-baseball-players-who-attended-byu-idaho.-the-new-table-should-contain-five-columns-playerid-schoolid-salary-and-the-yearidteamid-associated-with-each-salary.-order-the-table-by-salary-highest-to-lowest-and-print-out-the-table-in-your-repor",
     "href": "Project3.html#write-an-sql-query-to-create-a-new-dataframe-about-baseball-players-who-attended-byu-idaho.-the-new-table-should-contain-five-columns-playerid-schoolid-salary-and-the-yearidteamid-associated-with-each-salary.-order-the-table-by-salary-highest-to-lowest-and-print-out-the-table-in-your-repor",
     "title": "Client Report - Late flights and missing data (JSON files)",
